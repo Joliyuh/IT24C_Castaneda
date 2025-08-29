@@ -1,0 +1,20 @@
+INITIALIZE
+git init
+
+SETUP
+git config user.name
+git config user.email
+git config color.ui auto
+
+CHECK STATUS
+git status
+
+STAGING AREA decide to proceed or edit
+git add filename
+git add .
+
+git commit -m "This is my first ever commit (demo.txt)"
+
+git diff  - checks if theres any difference
+git log  - shows what you already did
+git log --oneline 
