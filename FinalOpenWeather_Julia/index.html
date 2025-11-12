@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Weather Checker</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #74b9ff, #a29bfe);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      text-align: center;
+      background: white;
+      padding: 25px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      width: 280px;
+    }
+
+    input {
+      width: 80%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 8px 12px;
+      background-color: #0984e3;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #74b9ff;
+    }
+
+    #weather {
+      margin-top: 15px;
+    }
+
+    #weather img {
+      width: 80px;
+      height: 80px;
+    }
+
+    h3 {
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <h1><b>Weather App</b></h1>
+    <h6>By: Julia Felixa Q. Castaneda</h6>
+    
+
+    <input type="text" id="city" placeholder="Enter city name">
+    <button id="checkBtn">Check Weather</button>
+
+    <div id="weather"></div>
+  </div>
+
+  <script>
+    const apiKey = "708cdcf29645ade292a085999dbd7ab6";
+
+    document.getElementById("checkBtn").addEventListener("click", function() {
+      const city = document.getElementById("city").value;
+      const weatherDiv = document.getElementById("weather");
+
+      if (city === "") {
+        weatherDiv.innerHTML = "<p>Please enter a city name.</p>";
+        return;
+      }
+
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          if (data.cod !== 200) {
+            weatherDiv.innerHTML = `<p>City not found!</p>`;
+            return;
+          }
+
+          const temp = data.main.temp;
+          const condition = data.weather[0].main;
+          const icon = data.weather[0].icon;
+          const iconUrl = `https://openweathermap.org/img/wn/02d@2x.png`;
+
+          weatherDiv.innerHTML = `
+            <h2>${data.name}</h2>
+            <img src="${iconUrl}" alt="Weather icon">
+            <p>${condition}</p>
+            <h3>${temp.toFixed(1)}°C</h3>
+          `;
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          weatherDiv.innerHTML = "<p>Unable to fetch weather data.</p>";
+        });
+    });
+  </script>
+</body>
+</html>
+
